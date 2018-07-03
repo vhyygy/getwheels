@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GetWheels.Data;
+using GetWheels.Data.Contracts;
+using GetWheels.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 
 namespace GetWheels.API
 {
@@ -30,7 +33,11 @@ namespace GetWheels.API
                 .UseMySql(Configuration.GetConnectionString("Default"),
                     b => b.MigrationsAssembly("GetWheels.API")));
 
-            services.AddMvc();
+            services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddMvc()
+                    .AddJsonOptions(options => 
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
