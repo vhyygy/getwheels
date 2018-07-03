@@ -34,7 +34,7 @@ namespace GetWheels.Data.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            User user = await _db.Users.FindAsync(id);
+            User user = await GetUserByIdAsync(id);
             if(user != null)
             {
                 _db.Users.Remove(user);
