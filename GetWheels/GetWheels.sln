@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWheels", "GetWheels\GetWheels.csproj", "{F8C13BE0-456A-4E3E-84A6-E922D95E7E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetWheels", "GetWheels\GetWheels.csproj", "{F8C13BE0-456A-4E3E-84A6-E922D95E7E94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWheels.Data", "GetWheels.Data\GetWheels.Data.csproj", "{358B4786-A93D-4CB9-BB4A-D479026C6BD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWheels.Services", "GetWheels.Services\GetWheels.Services.csproj", "{AE78A4AE-FA2E-4107-BC66-688AAA60538B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWheels.API", "GetWheels.API\GetWheels.API.csproj", "{6DAE504D-F5B1-49F2-B896-0D5A0EB48817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{F8C13BE0-456A-4E3E-84A6-E922D95E7E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8C13BE0-456A-4E3E-84A6-E922D95E7E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8C13BE0-456A-4E3E-84A6-E922D95E7E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358B4786-A93D-4CB9-BB4A-D479026C6BD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358B4786-A93D-4CB9-BB4A-D479026C6BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358B4786-A93D-4CB9-BB4A-D479026C6BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358B4786-A93D-4CB9-BB4A-D479026C6BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE78A4AE-FA2E-4107-BC66-688AAA60538B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE78A4AE-FA2E-4107-BC66-688AAA60538B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE78A4AE-FA2E-4107-BC66-688AAA60538B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE78A4AE-FA2E-4107-BC66-688AAA60538B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DAE504D-F5B1-49F2-B896-0D5A0EB48817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DAE504D-F5B1-49F2-B896-0D5A0EB48817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DAE504D-F5B1-49F2-B896-0D5A0EB48817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DAE504D-F5B1-49F2-B896-0D5A0EB48817}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
