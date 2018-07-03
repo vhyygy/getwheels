@@ -9,6 +9,7 @@ namespace GetWheels.Data.Models
     public class Car
     {
         [Key]
+        [MaxLength(10)]
         public string PlateNo { get; set; }
 
         [MaxLength(60)]

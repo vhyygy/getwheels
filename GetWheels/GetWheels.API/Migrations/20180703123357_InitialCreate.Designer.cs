@@ -11,8 +11,8 @@ using System;
 namespace GetWheels.API.Migrations
 {
     [DbContext(typeof(GWContextDb))]
-    [Migration("20180703121356_Cars")]
-    partial class Cars
+    [Migration("20180703123357_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,8 @@ namespace GetWheels.API.Migrations
             modelBuilder.Entity("GetWheels.Data.Models.Car", b =>
                 {
                     b.Property<string>("PlateNo")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10);
 
                     b.Property<string>("Model")
                         .HasMaxLength(60);
@@ -61,21 +62,23 @@ namespace GetWheels.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CarPlateNo");
+                    b.Property<string>("CarPlateNo")
+                        .IsRequired()
+                        .HasMaxLength(10);
 
-                    b.Property<Guid?>("FromId");
+                    b.Property<Guid>("LocationFromId");
+
+                    b.Property<Guid>("LocationToId");
 
                     b.Property<Guid>("TenantId");
 
-                    b.Property<Guid?>("ToId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("FromId");
+                    b.HasIndex("LocationFromId");
+
+                    b.HasIndex("LocationToId");
 
                     b.HasIndex("TenantId");
-
-                    b.HasIndex("ToId");
 
                     b.ToTable("Trips");
                 });
@@ -102,18 +105,20 @@ namespace GetWheels.API.Migrations
 
             modelBuilder.Entity("GetWheels.Data.Models.Trip", b =>
                 {
-                    b.HasOne("GetWheels.Data.Models.Location", "From")
+                    b.HasOne("GetWheels.Data.Models.Location", "LocationFrom")
                         .WithMany()
-                        .HasForeignKey("FromId");
+                        .HasForeignKey("LocationFromId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GetWheels.Data.Models.Location", "LocationTo")
+                        .WithMany()
+                        .HasForeignKey("LocationToId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GetWheels.Data.Models.User", "Tenant")
                         .WithMany("Trips")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GetWheels.Data.Models.Location", "To")
-                        .WithMany()
-                        .HasForeignKey("ToId");
                 });
 #pragma warning restore 612, 618
         }

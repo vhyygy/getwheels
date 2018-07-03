@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -10,15 +11,23 @@ namespace GetWheels.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public Location From { get; set; }
-
-        public Location To { get; set; }
-
+        [Required]
+        [MaxLength(10)]
         public string CarPlateNo { get; set; }
+
+        [ForeignKey("LocationFrom")]
+        public Guid LocationFromId { get; set; }
+
+        [ForeignKey("LocationToId")]
+        public Guid LocationToId { get; set; }
 
         [ForeignKey("Tenant")]
         public Guid TenantId { get; set; }
 
         public User Tenant { get; set; }
+
+        public Location LocationFrom { get; set; }
+
+        public Location LocationTo { get; set; }
     }
 }
