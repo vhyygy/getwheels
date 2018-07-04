@@ -1,4 +1,5 @@
 ﻿using GetWheels.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Text;
 
 namespace GetWheels.Data
 {
-    public class GWContextDb : DbContext
+    public class DBContext : IdentityDbContext
     {
-        public GWContextDb(DbContextOptions<GWContextDb> options) 
+        public DBContext(DbContextOptions<DBContext> options) 
             : base (options) {  }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,9 +17,12 @@ namespace GetWheels.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+
         public DbSet<Car> Cars { get; set; }
+
         public DbSet<Trip> Trips { get; set; }
+
         public DbSet<Location> Locations { get; set; }
 
     }

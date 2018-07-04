@@ -22,7 +22,7 @@ namespace GetWheels.Data.Models
         public Guid LocationToId { get; set; }
 
         [ForeignKey("Tenant")]
-        public Guid TenantId { get; set; }
+        public string TenantId { get; set; }
 
         public User Tenant { get; set; }
 

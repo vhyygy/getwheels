@@ -20,7 +20,7 @@ namespace GetWheels.Data.Models
         public int TripsCount { get; set; }
 
         [ForeignKey("User")]
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         public User User { get; set; }
     }

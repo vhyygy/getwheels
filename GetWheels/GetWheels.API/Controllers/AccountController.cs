@@ -2,33 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GetWheels.Data.Contracts;
 using GetWheels.Data.Models;
+using GetWheels.Data.Models.ViewModels;
+using GetWheels.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GetWheels.API.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        public readonly IUserRepository _userRepository;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }      
+        public readonly IJwtService _jwtService;
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public AccountController(
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            IJwtService jwtService)
         {
-            return Ok(await _userRepository.GetUsersAsync());
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _jwtService = jwtService;
         }
-
+        
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(Guid id)
+        public async Task<IActionResult> GetUser(string id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
-
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(u => u.Id == id);
             if(user is null)
             {
                 return NotFound();
@@ -36,37 +42,48 @@ namespace GetWheels.API.Controllers
             return Ok(user);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id,[FromBody] User user)
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
-            if(id != user.Id)
+            var result = await _signInManager
+                .PasswordSignInAsync(model.UserName, model.Password, model.IsPersistent, false);
+
+            if (result.Succeeded)
             {
-                return BadRequest();
+                var user = _userManager.Users.SingleOrDefault(r => r.Email == model.UserName);
+                string token = await _jwtService.GenerateJwtToken(user.Email, user.Id, user);
+                return Ok(new { token });
             }
-
-            var updatedUser = await _userRepository.UpdateAsync(user);
-
-            return Ok(updatedUser);
+            return BadRequest("Supplied values are invalid!");
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(Guid id)
-        {
-            await _userRepository.DeleteAsync(id);
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var createdUser = await _userRepository.CreateUser(user);
-            return Ok(createdUser);
-        }
+            User user = new User
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
 
+            var registrationResult = await _userManager.CreateAsync(user, model.Password);
+
+            if(registrationResult.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                string token = await _jwtService.GenerateJwtToken(user.Email, user.Id, user);
+                return Ok(new { token });
+            }
+            return BadRequest(registrationResult.Errors);
+        }
 
     }
 }
